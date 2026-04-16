@@ -1,0 +1,37 @@
+<div class="page-header">
+  <h1>Prompt Library</h1>
+  <p class="subtitle">{{ prompts.length }} prompt{{ prompts.length !== 1 ? 's' : '' }} saved</p>
+</div>
+
+<div *ngIf="loading" class="loading">
+  <div class="spinner"></div>
+  <p>Loading prompts...</p>
+</div>
+
+<div *ngIf="error" class="alert alert-error">{{ error }}</div>
+
+<div *ngIf="!loading && !error && prompts.length === 0" class="empty-state">
+  <p class="empty-icon">&#128221;</p>
+  <h3>No prompts yet</h3>
+  <p>Be the first to add a prompt to the library!</p>
+  <a routerLink="/add-prompt" class="btn btn-primary">Add Your First Prompt</a>
+</div>
+
+<div class="prompt-grid" *ngIf="!loading && prompts.length > 0">
+  <a
+    *ngFor="let prompt of prompts"
+    [routerLink]="['/prompts', prompt.id]"
+    class="prompt-card"
+  >
+    <div class="card-header">
+      <h3 class="card-title">{{ prompt.title }}</h3>
+      <span class="badge badge-{{ complexityLevel(prompt.complexity) }}">
+        {{ prompt.complexity }}/10
+      </span>
+    </div>
+    <div class="card-footer">
+      <span class="date">{{ formatDate(prompt.created_at) }}</span>
+      <span class="view-link">View details &#8594;</span>
+    </div>
+  </a>
+</div>

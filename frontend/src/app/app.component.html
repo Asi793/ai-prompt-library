@@ -1,0 +1,16 @@
+<nav class="navbar">
+  <a class="navbar-brand" routerLink="/prompts">
+    <span class="brand-icon">&#10022;</span>
+    AI Prompt Library
+  </a>
+  <ul class="nav-links">
+    <li><a routerLink="/prompts" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Browse</a></li>
+    <li><a routerLink="/add-prompt" routerLinkActive="active" class="btn-add">+ Add Prompt</a></li>
+  </ul>
+</nav>
+
+<main class="main-scroll">
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</main>
