@@ -18,6 +18,15 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200'
 ]
 
+REDIS_URL = os.environ.get(
+    'REDIS_URL',
+    'redis://default:mxtgzJXLjbjsPHHCymMCrxConKclnybV@nozomi.proxy.rlwy.net:22038'
+)
+parsed_redis_url = urlparse(REDIS_URL)
+REDIS_HOST = parsed_redis_url.hostname or os.environ.get('REDIS_HOST', 'localhost')
+REDIS_PORT = int(parsed_redis_url.port or os.environ.get('REDIS_PORT', '6379'))
+REDIS_PASSWORD = parsed_redis_url.password or os.environ.get('REDIS_PASSWORD', '')
+
 DATABASE_URL = os.environ.get(
     'DATABASE_URL',
     'postgresql://postgres:VikkBuNCdRGnedLYCOnHZbktNdjJGwvv@nozomi.proxy.rlwy.net:47837/railway'

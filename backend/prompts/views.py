@@ -7,7 +7,17 @@ from .models import Prompt
 
 
 def get_redis():
-    return redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0)
+    password = getattr(settings, 'REDIS_PASSWORD', None)
+    kwargs = {
+        'host': getattr(settings, 'REDIS_HOST', 'localhost'),
+        'port': getattr(settings, 'REDIS_PORT', 6379),
+        'db': getattr(settings, 'REDIS_DB', 0),
+        'socket_connect_timeout': 2,
+        'socket_timeout': 2,
+    }
+    if password:
+        kwargs['password'] = password
+    return redis.Redis(**kwargs)
 
 
 @csrf_exempt
@@ -67,9 +77,14 @@ def prompt_detail(request, prompt_id):
     except Prompt.DoesNotExist:
         return JsonResponse({'error': 'Prompt not found.'}, status=404)
 
-    r = get_redis()
-    key = f'prompt:{prompt.id}:views'
-    view_count = int(r.incr(key))
+    view_count = 0
+    try:
+        r = get_redis()
+        key = f'prompt:{prompt.id}:views'
+        view_count = int(r.incr(key))
+    except Exception:
+        # Redis is optional in deployed environments; return prompt data even if Redis is unavailable.
+        view_count = 0
 
     return JsonResponse({
         'id': prompt.id,
