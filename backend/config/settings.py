@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -9,14 +10,19 @@ DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
+DATABASE_URL = os.environ.get(
+    'DATABASE_URL',
+    'postgresql://postgres:VikkBuNCdRGnedLYCOnHZbktNdjJGwvv@nozomi.proxy.rlwy.net:47837/railway'
+)
+parsed_url = urlparse(DATABASE_URL)
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DATABASE_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.environ.get('POSTGRES_DB', 'library_db'),
-        'USER': os.environ.get('POSTGRES_USER', 'library_user'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'library_password'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        'ENGINE': 'django.db.backends.postgresql' if parsed_url.scheme in ('postgres', 'postgresql') else 'django.db.backends.postgresql',
+        'NAME': parsed_url.path.lstrip('/'),
+        'USER': parsed_url.username,
+        'PASSWORD': parsed_url.password,
+        'HOST': parsed_url.hostname,
+        'PORT': parsed_url.port or '',
     }
 }
 
