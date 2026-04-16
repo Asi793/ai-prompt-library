@@ -8,6 +8,7 @@ class Prompt(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        app_label = 'prompts'
         ordering = ['-created_at']
 
     def __str__(self):
