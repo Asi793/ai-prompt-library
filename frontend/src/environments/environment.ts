@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
-  apiBaseUrl: '/api'
+  production: true,
+  apiBaseUrl: 'https://ai-prompt-library-1-wr6z.onrender.com/api'
 };
