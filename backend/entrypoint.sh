@@ -20,4 +20,4 @@ echo "PostgreSQL is ready."
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput --clear
 
-exec python manage.py runserver 0.0.0.0:8000
+exec gunicorn ai-prompt-library.wsgi:application --bind 0.0.0.0:$PORT
