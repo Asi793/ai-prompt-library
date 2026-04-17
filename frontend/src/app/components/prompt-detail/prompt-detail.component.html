@@ -1,33 +1,38 @@
 <div class="back-bar">
-  <button class="btn-back" (click)="goBack()">&#8592; Back to Library</button>
-</div>
-
-<div *ngIf="loading" class="loading">
-  <div class="spinner"></div>
-  <p>Loading prompt...</p>
-</div>
-
-<div *ngIf="error" class="alert alert-error">{{ error }}</div>
-
-<div *ngIf="prompt && !loading" class="detail-card">
-  <div class="detail-header">
-    <div class="title-row">
-      <h1 class="detail-title">{{ prompt.title }}</h1>
-      <span class="badge badge-{{ complexityLevel(prompt.complexity) }}">
-        Complexity {{ prompt.complexity }}/10
-      </span>
-    </div>
-    <div class="meta-row">
-      <span class="meta-item">&#128197; {{ formatDate(prompt.created_at) }}</span>
-      <span class="meta-item view-count">
-        &#128065; {{ prompt.view_count }} view{{ prompt.view_count !== 1 ? 's' : '' }}
-      </span>
-    </div>
+    <button class="btn-back" (click)="goBack()">&#8592; Back to Library</button>
   </div>
 
-  <div class="detail-body">
-    <p class="section-label">PROMPT CONTENT</p>
-    <div class="content-box">{{ prompt.content }}</div>
-    <p class="copy-hint">&#128161; Select the text above to copy this prompt</p>
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading prompt...</p>
   </div>
-</div>
+
+  <div *ngIf="error" class="alert alert-error">{{ error }}</div>
+
+  <div *ngIf="prompt && !loading" class="detail-card">
+    <div class="detail-header">
+      <div class="title-row">
+        <h1 class="detail-title">{{ prompt.title }}</h1>
+        <span class="badge badge-{{ complexityLevel(prompt.complexity) }}">
+          Complexity {{ prompt.complexity }}/10
+        </span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-item">&#128197; {{ formatDate(prompt.created_at) }}</span>
+        <span class="meta-item view-count">
+          &#128065; {{ prompt.view_count }} view{{ prompt.view_count !== 1 ? 's' : '' }}
+        </span>
+      </div>
+      <div class="action-row">
+        <button class="btn-delete" (click)="deletePrompt()" [disabled]="deleting">
+          {{ deleting ? 'Deleting...' : '&#128465; Delete Prompt' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="detail-body">
+      <p class="section-label">PROMPT CONTENT</p>
+      <div class="content-box">{{ prompt.content }}</div>
+      <p class="copy-hint">&#128161; Select the text above to copy this prompt</p>
+    </div>
+  </div>
